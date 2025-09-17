@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+
+Sitemap: https://wenyaxie023.github.io/sitemap.xml
