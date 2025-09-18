@@ -20,7 +20,7 @@
 
     const updateCountText = (value) => {
       const safeValue = typeof value === "number" && Number.isFinite(value) ? value : 0;
-      countEl.textContent = `已有 ${safeValue} 人点赞`;
+      countEl.textContent = ` ${safeValue} liked`;
     };
 
     const setButtonState = (liked) => {
@@ -29,7 +29,7 @@
       button.disabled = liked;
       button.setAttribute("aria-pressed", liked ? "true" : "false");
       if (labelEl) {
-        labelEl.textContent = liked ? "已点赞" : "为我点赞";
+        labelEl.textContent = liked ? "liked" : "like";
       }
       if (iconEl) {
         iconEl.textContent = liked ? "💖" : "👍";
@@ -82,7 +82,7 @@
         updateCountText(data.value);
       } catch (error) {
         console.error("Unable to load like count:", error);
-        countEl.textContent = "点赞服务暂时不可用";
+        countEl.textContent = "fail";
       }
     };
 
@@ -104,7 +104,7 @@
       } catch (error) {
         console.error("Unable to record like:", error);
         setButtonState(false);
-        countEl.textContent = "点赞失败，请稍后再试";
+        countEl.textContent = "fail";
       }
     };
 
