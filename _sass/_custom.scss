@@ -31,8 +31,12 @@
   font-size: 1rem;
   letter-spacing: 0.02em;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease,
-    color 0.2s ease, border-color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
   box-shadow: 0 16px 38px -22px rgba(15, 23, 42, 0.35);
 }
 
@@ -99,12 +103,12 @@
   }
 }
 
-html[data-theme='dark'] .about-like-section {
+html[data-theme="dark"] .about-like-section {
   border-color: rgba(255, 255, 255, 0.08);
   box-shadow: 0 20px 50px -25px rgba(0, 0, 0, 0.7);
 }
 
-html[data-theme='dark'] .about-like-button.liked {
+html[data-theme="dark"] .about-like-button.liked {
   background: rgba(56, 189, 248, 0.15);
   border-color: rgba(56, 189, 248, 0.65);
   color: var(--global-theme-color);
