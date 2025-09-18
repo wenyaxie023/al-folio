@@ -35,11 +35,11 @@ If you have anything you'd like to discuss, feel free to reach out!
     class="about-like-button"
     id="about-like-button"
     type="button"
-    aria-label="为我点赞"
+    aria-label="like"
     aria-pressed="false"
     aria-describedby="about-like-count"
   >
-    <span class="sr-only">为我点赞</span>
+    <span class="sr-only">like</span>
     <span class="about-like-button__icon" aria-hidden="true">
       <i class="fa-regular fa-thumbs-up" aria-hidden="true"></i>
     </span>
@@ -50,7 +50,7 @@ If you have anything you'd like to discuss, feel free to reach out!
     aria-live="polite"
     data-state="loading"
   >
-    正在加载点赞人数…
+    counting…
   </p>
 </div>
 

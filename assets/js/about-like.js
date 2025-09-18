@@ -8,12 +8,15 @@
       return;
     }
 
+
     const iconEl = button.querySelector(".about-like-button__icon i");
     section.dataset.likeService = "";
+
 
     const namespace = "wenyaxie023_github_io";
     const key = "about_like";
     const storageKey = "about-like-liked";
+
     const counterApiBase = "https://api.counterapi.dev/v1";
     const countApiBase = "https://api.countapi.xyz";
     const encodedNamespace = encodeURIComponent(namespace);
@@ -178,7 +181,7 @@
 
     const updateCountText = (value) => {
       const safeValue = Number.isFinite(value) && value >= 0 ? Math.trunc(value) : 0;
-      setCountMessage(`已有 ${formatCount(safeValue)} 人点赞`, "success");
+      setCountMessage(` ${formatCount(safeValue)} likes`, "success");
     };
 
     const setButtonState = (liked) => {
@@ -198,6 +201,7 @@
       if (typeof window.confetti !== "function") {
         return;
       }
+
 
       if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         return;
@@ -254,14 +258,14 @@
     };
 
     const initializeCount = async () => {
-      setCountMessage("正在加载点赞人数…", "loading");
+      setCountMessage("counting…", "loading");
 
       try {
         const value = await attemptServiceAction("getCount");
         updateCountText(value);
       } catch (error) {
         console.error("Unable to load like count:", error);
-        setCountMessage("点赞服务暂时不可用", "error");
+        setCountMessage("404", "error");
       }
     };
 
@@ -281,7 +285,8 @@
       } catch (error) {
         console.error("Unable to record like:", error);
         setButtonState(false);
-        setCountMessage("点赞失败，请稍后再试", "error");
+        setCountMessage("please try later", "error");
+
       }
     };
 
