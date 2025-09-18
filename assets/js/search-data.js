@@ -9,16 +9,9 @@ ninja.data = [{
     handler: () => {
       window.location.href = "/";
     },
-  },{id: "nav-blog",
-          title: "blog",
-          description: "",
-          section: "Navigation",
-          handler: () => {
-            window.location.href = "/blog/";
-          },
-        },{id: "nav-cv",
+  },{id: "nav-cv",
           title: "cv",
-          description: "This is a description of the page. You can modify it in &#39;_pages/cv.md&#39;. You can also change or remove the top pdf download button.",
+          description: "",
           section: "Navigation",
           handler: () => {
             window.location.href = "/cv/";
@@ -369,8 +362,11 @@ ninja.data = [{
           description: "",
           section: "Books",handler: () => {
               window.location.href = "/books/the_godfather/";
-            },},{id: "news-one-paper-got-accepted-to-emnlp-2025-sparkles-smile",
-          title: 'One paper got accepted to EMNLP 2025! :sparkles: :smile:',
+            },},{id: "news-one-paper-has-been-accepted-to-emnlp-2025-as-an-oral-presentation-sparkles-smile",
+          title: 'One paper has been accepted to EMNLP 2025 as an Oral Presentation! :sparkles:...',
+          description: "",
+          section: "News",},{id: "news-one-paper-has-been-accepted-to-neurips-2025-as-an-oral-presentation-sparkles-smile",
+          title: 'One paper has been accepted to NeurIPS 2025 as an Oral Presentation! :sparkles:...',
           description: "",
           section: "News",},{id: "projects-project-1",
           title: 'project 1',
