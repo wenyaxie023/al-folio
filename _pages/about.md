@@ -29,3 +29,33 @@ Currently, I’m exploring:
 
 I’m always excited to connect. Questions, ideas, and early-stage thoughts are all welcome.
 If you have anything you'd like to discuss, feel free to reach out!
+
+<div class="about-like-section" id="about-like-section">
+  <button
+    class="about-like-button"
+    id="about-like-button"
+    type="button"
+    aria-label="为我点赞"
+    aria-pressed="false"
+    aria-describedby="about-like-count"
+  >
+    <span class="sr-only">为我点赞</span>
+    <span class="about-like-button__icon" aria-hidden="true">
+      <i class="fa-regular fa-thumbs-up" aria-hidden="true"></i>
+    </span>
+  </button>
+  <p
+    class="about-like-count"
+    id="about-like-count"
+    aria-live="polite"
+    data-state="loading"
+  >
+    正在加载点赞人数…
+  </p>
+</div>
+
+<script
+  defer
+  src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"
+></script>
+<script defer src="{{ '/assets/js/about-like.js' | relative_url | bust_file_cache }}"></script>
