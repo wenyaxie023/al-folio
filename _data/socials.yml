@@ -1,7 +1,6 @@
 # this file contains the social media links and usernames of the author
 # the commented lines are the default social media links supported by the template
 # the socials will be displayed in the order they are defined here
-
 # academia_edu:  your organization and your username Ex. https://organization.academia.edu/UserName
 #  organization: princeton # your organization as appears in the subdomain
 #  username:  AlbertEinstein # your username
@@ -14,7 +13,6 @@ email: xie00470@umn.edu # your email address
 github_username: wenyaxie023
 scholar_userid: b5h8RDgAAAAJ
 linkedin_username: wenya-xie-a6aa1735b
-
 # facebook_id: # your facebook id
 # flickr_id: # your flickr id
 # github_username: # your GitHub user name
