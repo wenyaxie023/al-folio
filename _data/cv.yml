@@ -5,8 +5,6 @@
       value: Wenya Xie
     - name: Pronouns
       value: she/her
-    - name: Email
-      value: xie00470@umn.edu
     - name: Location
       value: Minneapolis, Minnesota, USA
 
@@ -47,4 +45,5 @@
 - title: Other Interests
   type: list
   contents:
-    - Reading
+    - "Reading (I read broadly, and I'm a fan of Hermann Hesse and Dostoevsky)"
+    - "Tennis (I really enjoy running and hitting the ball)"

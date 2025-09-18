@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-One paper got accepted to EMNLP 2025! :sparkles: :smile:
+One paper has been accepted to EMNLP 2025 as an Oral Presentation! :sparkles: :smile:
