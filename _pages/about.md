@@ -24,8 +24,8 @@ My research centers on **large language models**, with a particular focus on **a
 
 Currently, I’m exploring:
 
-- Memory modeling & evaluation (exact recall, aggregation, drift).
-- Learning from user feedback expressed in natural language to adapt to personalized preferences.
+• Memory modeling & evaluation (exact recall, aggregation, drift).
+• Learning from user feedback expressed in natural language to adapt to personalized preferences.
 
 I’m always excited to connect. Questions, ideas, and early-stage thoughts are all welcome.
 If you have anything you'd like to discuss, feel free to reach out!
