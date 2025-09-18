@@ -8,19 +8,180 @@
       return;
     }
 
-    const iconEl = button.querySelector(".about-like-button__icon");
-    const labelEl = button.querySelector(".about-like-button__label");
+
+    const iconEl = button.querySelector(".about-like-button__icon i");
+    section.dataset.likeService = "";
+
 
     const namespace = "wenyaxie023_github_io";
     const key = "about_like";
     const storageKey = "about-like-liked";
+
+    const counterApiBase = "https://api.counterapi.dev/v1";
     const countApiBase = "https://api.countapi.xyz";
+    const encodedNamespace = encodeURIComponent(namespace);
+    const encodedKey = encodeURIComponent(key);
 
     let isLiked = false;
+    let activeServiceIndex = 0;
+
+    const formatCount = (value) => {
+      try {
+        return new Intl.NumberFormat("zh-CN").format(value);
+      } catch (error) {
+        return String(value);
+      }
+    };
+
+    const extractValue = (data) => {
+      if (typeof data === "number" && Number.isFinite(data)) {
+        return data;
+      }
+
+      if (!data || typeof data !== "object") {
+        return null;
+      }
+
+      const candidates = ["value", "count", "data"];
+      for (const candidate of candidates) {
+        const raw = data[candidate];
+        if (typeof raw === "number" && Number.isFinite(raw)) {
+          return raw;
+        }
+        if (typeof raw === "string") {
+          const parsed = Number.parseInt(raw, 10);
+          if (Number.isFinite(parsed)) {
+            return parsed;
+          }
+        }
+      }
+
+      return null;
+    };
+
+    const counterApiService = {
+      name: "counterapi",
+      async getCount() {
+        const response = await fetch(`${counterApiBase}/${encodedNamespace}/${encodedKey}`, {
+          method: "GET",
+          cache: "no-store",
+          credentials: "omit",
+        });
+
+        if (!response.ok) {
+          throw new Error(`counterapi get failed with status ${response.status}`);
+        }
+
+        const data = await response.json();
+        const value = extractValue(data);
+        if (value === null) {
+          throw new Error("counterapi get returned an unexpected payload");
+        }
+
+        return value;
+      },
+      async increment() {
+        const response = await fetch(`${counterApiBase}/${encodedNamespace}/${encodedKey}/up`, {
+          method: "POST",
+          cache: "no-store",
+          credentials: "omit",
+        });
+
+        if (!response.ok) {
+          throw new Error(`counterapi increment failed with status ${response.status}`);
+        }
+
+        const data = await response.json();
+        const value = extractValue(data);
+        if (value === null) {
+          throw new Error("counterapi increment returned an unexpected payload");
+        }
+
+        return value;
+      },
+    };
+
+    const countApiService = (() => {
+      let initialized = false;
+
+      const ensureInitialized = async () => {
+        if (initialized) {
+          return;
+        }
+
+        initialized = true;
+
+        try {
+          await fetch(`${countApiBase}/create?namespace=${encodedNamespace}&key=${encodedKey}&value=0`, {
+            cache: "no-store",
+            credentials: "omit",
+          });
+        } catch (error) {
+          console.warn("CountAPI initialize failed (likely already exists):", error);
+        }
+      };
+
+      return {
+        name: "countapi",
+        async getCount() {
+          await ensureInitialized();
+
+          const response = await fetch(`${countApiBase}/get/${encodedNamespace}/${encodedKey}`, {
+            method: "GET",
+            cache: "no-store",
+            credentials: "omit",
+          });
+
+          if (!response.ok) {
+            throw new Error(`countapi get failed with status ${response.status}`);
+          }
+
+          const data = await response.json();
+          const value = extractValue(data);
+          if (value === null) {
+            throw new Error("countapi get returned an unexpected payload");
+          }
+
+          return value;
+        },
+        async increment() {
+          await ensureInitialized();
+
+          const response = await fetch(`${countApiBase}/hit/${encodedNamespace}/${encodedKey}`, {
+            method: "GET",
+            cache: "no-store",
+            credentials: "omit",
+          });
+
+          if (!response.ok) {
+            throw new Error(`countapi increment failed with status ${response.status}`);
+          }
+
+          const data = await response.json();
+          const value = extractValue(data);
+          if (value === null) {
+            throw new Error("countapi increment returned an unexpected payload");
+          }
+
+          return value;
+        },
+      };
+    })();
+
+    const services = [counterApiService, countApiService];
+
+    const setCountMessage = (message, state = "success") => {
+      countEl.textContent = message;
+      if (state) {
+        countEl.dataset.state = state;
+      } else {
+        countEl.removeAttribute("data-state");
+      }
+    };
 
     const updateCountText = (value) => {
-      const safeValue = typeof value === "number" && Number.isFinite(value) ? value : 0;
-      countEl.textContent = `已有 ${safeValue} 人点赞`;
+      const safeValue = Number.isFinite(value) && value >= 0 ? Math.trunc(value) : 0;
+      setCountMessage(` ${formatCount(safeValue)} likes`, "success");
     };
 
     const setButtonState = (liked) => {
@@ -28,11 +189,11 @@
       button.classList.toggle("liked", liked);
       button.disabled = liked;
       button.setAttribute("aria-pressed", liked ? "true" : "false");
-      if (labelEl) {
-        labelEl.textContent = liked ? "已点赞" : "为我点赞";
-      }
+      button.dataset.state = liked ? "liked" : "idle";
+
       if (iconEl) {
-        iconEl.textContent = liked ? "💖" : "👍";
+        iconEl.className = `${liked ? "fa-solid" : "fa-regular"} fa-thumbs-up`;
+        iconEl.setAttribute("aria-hidden", "true");
       }
     };
 
@@ -41,70 +202,91 @@
         return;
       }
 
-      const duration = 1200;
-      const animationEnd = Date.now() + duration;
-      const colors = ["#f472b6", "#38bdf8", "#facc15", "#4ade80", "#a78bfa"];
 
-      (function frame() {
-        window.confetti({
-          particleCount: 40,
-          spread: 65,
-          startVelocity: 35,
-          gravity: 0.9,
-          scalar: 0.9,
-          ticks: 90,
-          origin: {
-            x: Math.random() * 0.6 + 0.2,
-            y: Math.random() * 0.2 + 0.1,
-          },
-          colors,
-        });
+      if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        return;
+      }
 
-        if (Date.now() < animationEnd) {
-          requestAnimationFrame(frame);
+      const rect = button.getBoundingClientRect();
+      const originX = (rect.left + rect.width / 2) / (window.innerWidth || 1);
+      const originY = (rect.top + rect.height / 2) / (window.innerHeight || 1);
+      const colors = ["#f472b6", "#38bdf8", "#facc15", "#f97316", "#a855f7", "#4ade80"];
+      const defaults = {
+        startVelocity: 36,
+        gravity: 0.92,
+        ticks: 120,
+        zIndex: 1000,
+      };
+
+      window.confetti({
+        ...defaults,
+        particleCount: 55,
+        spread: 70,
+        origin: { x: originX, y: originY },
+        colors,
+      });
+
+      window.confetti({
+        ...defaults,
+        particleCount: 45,
+        spread: 120,
+        decay: 0.92,
+        scalar: 0.85,
+        origin: { x: originX, y: Math.max(originY - 0.05, 0) },
+        colors,
+      });
+    };
+
+    const attemptServiceAction = async (action) => {
+      const attempts = services.length;
+
+      for (let offset = 0; offset < attempts; offset += 1) {
+        const index = (activeServiceIndex + offset) % attempts;
+        const service = services[index];
+
+        try {
+          const value = await service[action]();
+          activeServiceIndex = index;
+          section.dataset.likeService = service.name;
+          return value;
+        } catch (error) {
+          console.error(`Like service ${service.name} ${action} failed:`, error);
         }
-      })();
+      }
+
+      throw new Error(`All like services failed to ${action}`);
     };
 
     const initializeCount = async () => {
-      try {
-        await fetch(`${countApiBase}/create?namespace=${namespace}&key=${key}&value=0`);
-      } catch (error) {
-        // Ignore errors due to the counter already existing.
-      }
+      setCountMessage("counting…", "loading");
 
       try {
-        const response = await fetch(`${countApiBase}/get/${namespace}/${key}`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch like count");
-        }
-        const data = await response.json();
-        updateCountText(data.value);
+        const value = await attemptServiceAction("getCount");
+        updateCountText(value);
       } catch (error) {
         console.error("Unable to load like count:", error);
-        countEl.textContent = "点赞服务暂时不可用";
+        setCountMessage("404", "error");
       }
     };
 
     const incrementLike = async () => {
       try {
-        const response = await fetch(`${countApiBase}/hit/${namespace}/${key}`);
-        if (!response.ok) {
-          throw new Error("Failed to increment like count");
-        }
-        const data = await response.json();
-        updateCountText(data.value);
+        const value = await attemptServiceAction("increment");
+        updateCountText(value);
         setButtonState(true);
+
         try {
           localStorage.setItem(storageKey, "true");
         } catch (storageError) {
           console.warn("Unable to persist like preference:", storageError);
         }
+
         triggerConfetti();
       } catch (error) {
         console.error("Unable to record like:", error);
         setButtonState(false);
-        countEl.textContent = "点赞失败，请稍后再试";
+        setCountMessage("please try later", "error");
+
       }
     };
 
@@ -129,6 +311,7 @@
       }
 
       button.disabled = true;
+      button.dataset.state = "pending";
       incrementLike();
     });
   });
