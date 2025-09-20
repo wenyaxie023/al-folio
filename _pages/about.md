@@ -18,7 +18,7 @@ announcements:
   limit: 5
 ---
 
-I’m **Wenya Xie**, a first-year Ph.D. student in Computer Science at the **University of Minnesota (UMN)**, advised by [**Prof. Zirui Liu**](https://zirui-ray-liu.github.io/). Previously, I worked as a research assistant at CUHK (Shenzhen) with Benyou Wang and Feng Jiang. I received my bachelor’s degree from Wuhan University.
+I’m **Wenya Xie**, a first-year Ph.D. student in Computer Science at the **University of Minnesota (UMN)**, advised by [**Prof. Zirui Liu**](https://zirui-ray-liu.github.io/). Previously, I worked as a research assistant at CUHK (Shenzhen) with Prof. Benyou Wang and Feng Jiang. I received my bachelor’s degree from Wuhan University.
 
 My research centers on **large language models**, with a particular focus on **agent memory** and **multi-turn interaction**.
 
